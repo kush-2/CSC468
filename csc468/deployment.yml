@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-deployment
-  labels:
-    role: app
+  name: mysql-deployment
+  namespace: kush  # Use your namespace name
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      role: app
+      app: mysql
   template:
     metadata:
       labels:
-        role: app
-    spec:
-      containers:
-      - name: app
-        image: DOCKER_USER/DOCKER_APP:BUILD_NUMBER
-        resources:
-          requests:
-            cpu: 10m
+        app: mysql
+  spec:
+    containers:
+    - name: mysql
+      image: mysql/mysql-server:latest
+      env:
+      - name: MYSQL_ROOT_PASSWORD
+        value: password  # Set your MySQL root password
+      ports:
+      - containerPort: 3306
